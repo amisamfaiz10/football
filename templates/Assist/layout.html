@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %} Layout {% endblock %}</title>
+  {% block extra_head %}
+  <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+  {% endblock %}
+</head>
+<body>
+
+  <div class="sidebar">
+    <ul>
+      <img src="{% static 'Assist/images/mylogo.png' %}" style="width: 245px;margin-left: 3px">
+      <hr>
+      <br>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'your_players' %}">Your Players</a></li>
+      <li><a href="{% url 'buy_players' %}">Buy a Player</a></li>
+      <li><a href="{% url 'transfer_requests' %}">Transfer Requests</a></li>
+      <li><a href="{% url 'schedule' %}">Schedule</a></li>
+      <li><a href="{% url 'update_club_details' %}">Update Club details</a></li>
+      <li><a href="{% url 'trophies' %}">Trophies</a></li>   
+      <li><a href="{% url 'log_out' %}"> Log out</a></li>   
+    </ul>
+  </div>
+
+  {% block body %}
+  {% endblock %}
+
+</body>
+</html>

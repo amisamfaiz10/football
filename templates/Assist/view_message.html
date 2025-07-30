@@ -1,0 +1,138 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>{% block title %}
+            {{message.player.name}}
+            {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+{% endblock %}
+
+
+{% block body %}
+  <h1 class="page-title">Message Details</h1>
+
+  <div class="message-container">
+    <p><strong>From Club:</strong> {{ message.sender_club.name }}</p>
+    <p><strong>To Club:</strong> {{ message.recipient_club.name }}</p>
+    <p><strong>Player:</strong> {{ message.player.name }}</p>
+    <p><strong>Sent At:</strong> {{ message.sent_at|date:"F j, Y, g:i a" }}</p>
+    <p><strong>Market Value:</strong> £ {{ message.market_value }}</p>
+
+    {% if message.accepted %}
+      <p class="status accepted"><strong>Status:</strong> Accepted</p>
+    {% elif message.rejected %}
+      <p class="status rejected"><strong>Status:</strong> Rejected</p>
+    {% else %}
+      {% if club %}
+        <p class="info">Message sent successfully.</p>
+      {% else %}
+        <form method="POST" action="{% url 'view_message' message.id %}" class="action-form">
+          {% csrf_token %}
+          <button type="submit" name="action" value="accept" class="btn accept-btn">Accept</button>
+          <button type="submit" name="action" value="reject" class="btn reject-btn">Reject</button>
+        </form>
+      {% endif %}
+    {% endif %}
+    <br>
+    <a href="{% url 'transfer_requests' %}" class="back-link">← Back to Messages</a>
+  </div>
+<style>
+
+  .page-title {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+
+    .message-container {
+      background-color: #f4f6ff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      max-width: 600px;
+    }
+
+    .message-container p {
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .status {
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .status.accepted {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status.rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .info {
+      font-style: italic;
+      color: #333;
+      background-color: #fff3cd;
+      padding: 10px;
+      border-left: 5px solid #ffeeba;
+      margin-top: 10px;
+      border-radius: 4px;
+    }
+
+    .action-form {
+      margin-top: 15px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      font-size: 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .accept-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .accept-btn:hover {
+      background-color: #218838;
+    }
+
+    .reject-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .reject-btn:hover {
+      background-color: #c82333;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #4d79ff;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      color: #002db3;
+    }
+  
+</style>
+{% endblock %}

@@ -1,0 +1,330 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block extra_head %}
+  <head>
+    <title>
+      {% block title %}
+          Home
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <script src="{% static 'Assist/js/club_details.js' %}"></script>
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+
+{% endblock %}
+
+{% block body %}
+
+  <div class="team-container">
+    <!-- Team Info Section -->
+    <div class="team-info">
+      <img src="{{ club.logo.url }}" alt="Team Logo" class="team-logo">
+      <h2 class="team-name">{{club.name}}</h2>
+    </div>
+
+    <!-- Budget Section -->
+    <div class="budget-info">
+      <div class="budget-item">
+        <label for="transfer-budget">Transfer Budget:</label>
+        <span id="transfer-budget" class="budget-amount">£{{ club.transfer_budget|intcomma }}</span>
+      </div>
+      <div class="budget-item">
+        <label for="salary-budget">Salary Budget:</label>
+        <span id="salary-budget" class="budget-amount">£{{ club.salary_budget|intcomma }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="timer">
+    {% if next_match %}
+      <h2>Upcoming Match</h2>
+  
+      <div class="match-preview">
+        <div class="team">
+          <img src="{{ club.logo.url }}" alt="{{ club.name }} Logo" class="team-logo">
+          <p class="team-name">{{ club.name }}</p>
+        </div>
+  
+        <div class="vs-box">VS</div>
+  
+        <div class="team">
+          <img src="{{ next_match.opponent.logo.url }}" alt="{{ next_match.opponent.name }} Logo" class="team-logo">
+          <p class="team-name">{{ next_match.opponent.name }}</p>
+        </div>
+      </div>
+  
+      <p><strong>Location:</strong> {{ next_match.location }}</p>
+      <p><strong>Date:</strong> {{ next_match.event_date }}</p>
+  
+      <div id="countdown">
+        <strong id="time">⏳ Time Left:</strong> <span id="timer"></span>
+      </div>
+    {% else %}
+      <p>No upcoming matches scheduled.</p>
+      <a href="{% url 'add_schedule' %}" class="add-schedule-link">Add New Schedule Event</a>
+    {% endif %}
+  </div>
+  
+
+
+  <div class="club-kit">
+    {% if club.kit %}
+      <div class="kit-display">
+        <img src="{{ club.kit.url }}" alt="Club Kit" class="kit-image">
+      </div>
+      <div class="kit-actions">
+        <a href="{% url 'update_club_details' %}" class="btn">Update your kit</a>
+      </div>
+    {% else %}
+      <div class="kit-actions">
+        <a href="{% url 'update_club_details' %}">
+          <button class="upload-kit-button" class="btn">Upload Kit</button>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+  
+
+  <style>
+
+.timer {
+  max-width: 700px;
+  margin: 50px auto;
+  background: #f0f8ff; /* or try #e3f2fd */
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  border-left: 5px solid #007bff;
+}
+
+
+.timer h2 {
+  font-size: 28px;
+  color: #212529;
+  margin-bottom: 25px;
+}
+
+.match-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.team {
+  text-align: center;
+}
+
+.team-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+.team-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 16px;
+}
+
+.vs-box {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+  padding: 8px 14px;
+  background-color: #e9ecef;
+  border-radius: 10px;
+}
+
+#countdown {
+  margin-top: 25px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #28a745;
+}
+
+    header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    }
+    main {
+    padding: 20px;
+    text-align: center;
+    }
+    footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    }
+    
+    * Style the team-container div */
+    .team-container {
+      margin-top: 20px;
+      margin-left: 50px;
+      margin-right: 50px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Style for the team-info section */
+    .team-info {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    
+    .team-logo {
+      width: 120px; /* Adjust logo size */
+      height: 120px; /* Ensure logo is square */
+      border-radius: 50%;
+      margin-bottom: 15px;
+      object-fit: cover; /* Ensures image doesn't stretch */
+      background-color: #ffffff; /* Background color for the logo */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+    }
+    
+    .team-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #343a40;
+    }
+    
+    /* Style for the budget-info section */
+    .budget-info {
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    
+    .budget-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #495057;
+    }
+    
+    .budget-item label {
+      font-weight: bold;
+    }
+    
+    .budget-amount {
+      font-size: 18px;
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    .club-kit {
+      background-color: #f7f7f7; /* Light background */
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .club-kit .kit-display {
+      margin-bottom: 20px;
+    }
+    
+    .club-kit .kit-image {
+      max-width: 40%;
+      height: 40%;
+      border-radius: 8px;
+      border: 2px solid #ddd;
+    }
+    
+    .club-kit .kit-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .club-kit .kit-actions a {
+      text-decoration: none;
+    }
+    
+    .club-kit .update-kit-button,
+    .club-kit .upload-kit-button {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .club-kit .update-kit-button:hover,
+    .club-kit .upload-kit-button:hover {
+      background-color: #0056b3;
+    }
+    
+    .club-kit .kit-actions a {
+      margin-top: 15px;
+    }
+    
+    .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    }
+  </style>
+
+
+
+<script>
+  const matchTime = new Date("{{ next_match.event_date|date:'Y-m-d H:i:s' }}").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = matchTime - now;
+
+    if (distance < 0) {
+      document.getElementById("timer").innerHTML = "Match Started";
+      document.getElementById("time").style="display:none";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML =
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown(); // initial run
+  setInterval(updateCountdown, 1000); // update every second
+</script>
+
+ {% endblock %}
+
+

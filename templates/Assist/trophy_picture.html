@@ -1,0 +1,110 @@
+{% extends 'Assist/layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Update Trophy
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    <script src="{% static 'Goal/js/club_details.js' %}"></script>
+</head>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h3 class="form-title">Upload Trophy Picture</h3>
+    <hr class="divider">
+
+    <form method="post" enctype="multipart/form-data" class="update-form">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="name" class="form-label">Trophy Name:</label>
+            <input type="text" id="name" name="name" value="{{ trophy.name }}" class="form-input" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="picture" class="form-label">Upload Picture:</label>
+            <input type="file" id="picture" name="picture" accept="image/*" class="form-input" required>
+            <p class="form-hint">File type should only be PNG or JPG.</p>
+            <p class="form-hint">File size should be less than 10MB.</p>
+        </div>
+
+        <button type="submit" class="submit-button">Submit</button>
+    </form>
+</div>
+
+
+<style>
+  .form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.divider {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 1rem 0;
+}
+
+.update-form .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.5rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-hint {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+</style>
+{% endblock %}

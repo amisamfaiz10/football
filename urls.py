@@ -1,0 +1,45 @@
+from django.urls import path
+
+from . import views
+
+urlpatterns=[
+    
+    path("",views.index,name="index"),
+    path("signup/",views.sign_up,name="sign_up"),
+    path("home/",views.home,name="home"),
+    path("yourplayers/",views.your_players,name="your_players"),
+    path("buyplayers/",views.buy_players,name="buy_players"),
+    path("buy_players_search/",views.buy_players_search,name="buy_players_search"),
+    path("buy_players_filter/",views.buy_players_filter,name="buy_players_filter"),
+    path("<int:player_id>/add_player",views.add_player,name="add_player"), 
+    path("transfer_requests/",views.transfer_requests,name="transfer_requests"),
+    path("<int:message_id>/message",views.view_message,name="view_message"),
+    path("<int:message_id>/delete",views.delete_message,name="delete_message"),
+    path("<int:player_id>/add_free_agent/",views.add_free_agent,name="add_free_agent"),
+    path("free_player/",views.free_player,name="free_player"),
+    path("<int:player_id>/player_details",views.player_details,name="player_details"),
+    path('schedule/', views.schedule, name='schedule'),
+    path('schedule/add/', views.add_schedule, name='add_schedule'),
+    path('schedule/update/<int:schedule_id>/', views.update_schedule, name='update_schedule'),
+    path('schedule/delete/<int:schedule_id>/',views.delete_schedule,name="delete_schedule"),
+    path('remove_player/<int:player_id>/',views.remove_player,name="remove_player"),
+    path('update_club_details/',views.update_club_details,name="update_club_details"),
+    path('update_club_logo/',views.update_club_logo,name="update_club_logo"),
+    path('edit_player_details/<int:player_id>/',views.edit_player_details,name="edit_player_details"),
+    path('edit_player_picture/<int:player_id>/',views.edit_player_picture,name="edit_player_picture"),
+    path('update_club_kit/',views.upload_club_kit,name="update_club_kit"),
+    path('forgot_password/',views.forgot_password,name="forgot_password"),
+    path('reset_password/',views.reset_password,name="reset_password"),
+    path('trophies/',views.trophies,name="trophies"),
+    path('add_trophy/',views.add_trophy,name="add_trophy"),
+    path('edit_trophy/<int:trophy_id>/',views.update_trophy,name="update_trophy"),
+    path('trophy_picture/<int:trophy_id>/',views.trophy_picture,name="trophy_picture"),
+    path('add_coach/',views.add_coach,name="add_coach"),
+    path('edit_coach_details/<int:coach_id>/',views.edit_coach_details,name="edit_coach_details"),
+    path('coach_details/<int:coach_id>/',views.coach_details,name="coach_details"),
+    path('edit_coach_picture/<int:coach_id>/',views.edit_coach_picture,name="edit_coach_picture"),
+    path('remove_coach/<int:coach_id>/',views.remove_coach,name="remove_coach"),
+    path('buy_player_club/',views.buy_player_club,name="buy_player_club"),
+    path('log_out/',views.log_out,name="log_out"),
+       
+]

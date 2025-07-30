@@ -1,0 +1,125 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>{% block title %}Messages
+            {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+{% endblock %}
+
+{% block body %}
+{{error}}
+  <h1>Received Requests</h1>
+
+  {% if received_messages %}
+    <ul class="message-list">
+      {% for message in received_messages %}
+        <li class="message-item">
+          <strong>From Club:</strong> {{ message.sender_club.name }} <br>
+          <strong>Player:</strong> {{ message.player.name }} <br>
+          <strong>Sent At:</strong> {{ message.sent_at|date:"F j, Y, g:i a" }} <br>
+
+          <div class="actions">
+            <a href="{% url 'view_message' message.id %}">View</a> |
+            <a href="{% url 'delete_message' message.id %}">Delete</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-messages">No received requests.</p>
+  {% endif %}
+
+  <br>
+
+  <h1>Sent Requests</h1>
+  {% if sent_messages %}
+    <ul class="message-list">
+      {% for message in sent_messages %}
+        <li class="message-item">
+          <strong>To Club:</strong> {{ message.recipient_club.name }} <br>
+          <strong>Player:</strong> {{ message.player.name }} <br>
+          <strong>Sent At:</strong> {{ message.sent_at|date:"F j, Y, g:i a" }} <br>
+          <div class="actions">
+            <a href="{% url 'view_message' message.id %}">View</a> |
+            <a href="{% url 'delete_message' message.id %}">Delete</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="no-messages">No sent requests.</p>
+  {% endif %}
+
+  
+  <style>
+ 
+
+    h1 {
+        font-size: 24px;
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Styling the message lists */
+    .message-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .message-item {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+    }
+
+    .message-item strong {
+        color: #007bff;
+    }
+
+    .message-item a {
+        color: #007bff;
+        text-decoration: none;
+        margin-right: 10px;
+    }
+
+    .message-item a:hover {
+        text-decoration: underline;
+    }
+
+    .message-item .actions {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .message-item .actions a {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .message-item .actions a:hover {
+        background-color: #0056b3;
+    }
+
+    /* No messages section */
+    .no-messages {
+        font-size: 16px;
+        color: #888;
+        font-style: italic;
+    }
+</style>
+
+{% endblock %}

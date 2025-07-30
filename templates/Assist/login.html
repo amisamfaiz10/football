@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{% static 'Assist/css/login.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    <script>
+        function togglePassword(fieldId, icon) {
+            const input = document.getElementById(fieldId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "🙈";
+            } else {
+                input.type = "password";
+                icon.textContent = "👁";
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <div class="login-container">
+        <img src="{% static 'Assist/images/mylogo1.png' %}" style="width: 300px;">
+        <h2>Login</h2>
+        {% if message %}
+           <p style="color: red;">{{ message }}</p>
+          {% endif %}
+        <form action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" required>
+                    <span onclick="togglePassword('password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁</span>
+                </div>
+            </div>            
+            <a href="{% url 'forgot_password' %}">Forgot password?</a>
+            <br>
+            <br>
+            <button type="submit" class="login-btn">Login</button>
+        </form>
+        <div class="sign-in-link">
+            <p>Don't have an account? <a href="{% url 'sign_up' %}">Sign Up</a></p>
+        </div>
+    </div>
+</body>
+</html>

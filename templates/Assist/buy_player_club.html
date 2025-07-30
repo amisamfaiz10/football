@@ -1,0 +1,104 @@
+{% extends "Assist/layout.html" %}
+{% load static %}
+
+{% block extra_head %}
+    <title>{% block title %}Buy a Player{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+{% endblock %}
+
+{% block body %}
+
+    <h1 style="text-align: center;margin-top: 30px; margin-bottom:9px;" class="heading">Select a club</h1>
+    
+  
+
+    <form method="POST" action="{% url 'buy_player_club' %}">
+        {% csrf_token %}
+
+       <h5 style="color: red;text-align: center;"> {{message}}</h5>
+
+        <label for="club-select"><h2>Clubs:</h2></label>
+        <br>
+        <select id="club-select" name="club" class="club-dropdown">
+            <option value="" selected disabled>Select a club</option>
+            {% for club in clubs %}
+                <option value="{{ club.id }}">{{ club.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Submit" class="submit-button">
+    </form>
+
+
+
+
+<style>
+
+    /* General form layout */
+form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* Heading */
+heading {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Label */
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Dropdown styling */
+.club-dropdown {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    transition: border-color 0.3s ease;
+}
+
+.club-dropdown:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+/* Submit button */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+
+</style>
+{% endblock %}

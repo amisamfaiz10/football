@@ -1,0 +1,149 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Club details
+        {% endblock %}
+    </title>
+   
+  <link rel="stylesheet" href="{% static 'Assist/css/club_details.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+  <script src="{% static 'Goal/js/club_details.js' %}"></script>
+</head>
+
+{% endblock %}
+
+{% block body %}
+    
+  <div class="form-container" style="margin-left: 300px; margin-top: 50px;">
+  <div class="club-header">
+    <img src="{{ club.logo.url }}" alt="{{ club.name }} Logo" class="club-logo">
+    <h1 style="margin-top: 10px;">{{ club.name }}</h1>
+  </div>
+    <form action="{% url 'update_club_details' %}" method="post" enctype="multipart/form-data" onsubmit="return checkform()">
+        {% csrf_token %}
+        <p style="color: red;">{{message}}</p>
+      <label for="name">Club Name:</label>
+      <input type="text" id="name" name="name" value="{{club.name}}" placeholder="Club Name" required>
+      
+      <label for="stadium">Stadium Name:</label>
+      <input type="text" id="stadium" value="{{club.stadium_name}}" name="stadium" placeholder="Stadium Name" required>
+      
+      <label for="logo">Update your Logo:</label>
+      <a href="{% url 'update_club_logo' %}" class="btn"> Click here</a>
+
+      <label for="logo">Update your kit:</label>
+      <a href="{% url 'update_club_kit' %}" class="btn"> Click here</a>
+      
+      <label for="sponsor"> Sponsor</label>
+      <input type="text" id="sponsor" name="sponsor" value="{{club.sponsor}}" placeholder="Sponsor Name" required>
+
+      <label for="transfer_budget"> Market value:</label>
+      <input type="number" id="transfer_budget" name="transfer_budget" value="{{club.transfer_budget}}" placeholder="Transfer Budget" required>
+
+      <label for="salary_budget">Salary Budget:</label>
+      <input type="number" id="salary_budget" name="salary_budget" value="{{club.salary_budget}}" placeholder="Salary Budget" required>
+      
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+
+
+
+  <style>
+
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Style for the sidebar container */
+  .sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #4d79ff;
+    padding-top: 20px;
+    overflow-x: hidden;
+  }
+  
+  /* Style for the sidebar list */
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Style for each sidebar item */
+  .sidebar ul li {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  /* Style for the sidebar links */
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    transition: background-color 0.3s;
+  }
+  
+  /* Change background color on hover */
+  .sidebar ul li a:hover {
+    background-color:  #002db3;
+  }
+  
+  /* Style for the rest of the page content */
+  body {
+    margin-left: 250px; /* Make space for the sidebar */
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .sidebar ul li a.active {
+    background-color: #001f80;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 5px;
+  }
+  
+    .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .club-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.club-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+
+    
+  </style>
+
+{% endblock %}

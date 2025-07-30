@@ -1,0 +1,137 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+  <title>
+    {% block title %}
+    New Schedule
+    {% endblock %}
+  </title>
+  <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+
+{% endblock %}
+
+
+{% block body %}
+  <div class="schedule-form-container">
+    <h1>Add New Schedule Event</h1>
+    <br>
+
+    {% if message %}
+    <p style="color: red;">{{message}}</p>
+    <br>
+    <br>
+    {% endif %}
+
+    <!-- Form to create a new event -->
+    <form id="scheduleForm" method="POST" action="{% url 'add_schedule' %}">
+      {% csrf_token %}
+      
+      <!-- Event Type Selection -->
+      <div class="form-group">
+        <label for="event_type">Event Type</label>
+        <select name="event_type" id="event_type" required>
+          <option value="" disabled selected>Select an event</option>
+          <option value="Match">Match</option>
+          <option value="Training">Training</option>
+        </select>
+      </div>
+
+      <!-- Opponent (for Matches) -->
+      <div class="form-group" id="opponentDiv">
+        <label for="opponent">Opponent</label>
+        <select name="opponent" id="opponent">
+          <option value="" disabled selected>Select Opponent</option>
+          {% for club in clubs %}
+            <option value="{{ club.id }}">
+              {{ club.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Event Date -->
+      <div class="form-group">
+        <label for="event_date">Event Date</label>
+        <input type="datetime-local" id="event_date" name="event_date" required>
+      </div>
+      <!-- Submit Button -->
+      <button type="submit">Save Schedule</button>
+    </form>
+  </div>
+
+  <style>
+    .schedule-form-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+    }
+  </style>
+
+  <script>
+   // JavaScript to show/hide the opponent field based on event type
+   document.getElementById('event_type').addEventListener('change', function() {
+  toggleOpponentField(this.value);
+});
+
+// Trigger the toggle when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  const eventType = document.getElementById('event_type').value;
+  toggleOpponentField(eventType);
+});
+
+function toggleOpponentField(eventType) {
+  const opponentDiv = document.getElementById('opponentDiv');
+
+  if (eventType === 'Match') {
+    opponentDiv.style.display = 'block';
+    opponentSelect.required = true;
+  } 
+  else {
+    opponentDiv.style.display='none';
+    opponentSelect.required = false;
+  }
+
+
+}
+  </script>
+{% endblock %}

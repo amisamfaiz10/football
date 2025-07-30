@@ -1,0 +1,31 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+
+{% endblock %}
+
+{% block body %}
+  <h1>Message Details</h1>
+
+  <p><strong>From Club:</strong> {{ message.sender_club.name }}</p>
+  <p><strong>To Club:</strong> {{ message.recipient_club.name }}</p>
+  <p><strong>Player:</strong> {{ message.player.name }}</p>
+  <p><strong>Sent At:</strong> {{ message.sent_at|date:"F j, Y, g:i a" }}</p>
+  <p><strong>Market Value:</strong> {{ message.market_value }}</p>
+
+  {% if accepted %}
+      {{ accepted }}
+    {% else %}
+     {{rejected}}
+  {% endif %}
+
+  <!-- Optionally, provide a link back to the list of received messages -->
+  <a href="{% url 'transfer_requests' %}">Back to Messages</a>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{% static 'Assist/css/signup.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const password = document.getElementById("password");
+            const confirm = document.getElementById("confirm-password");
+            const msg = document.getElementById("message");
+
+            form.addEventListener("submit", function (e) {
+              
+                if (password.value.length < 8) {
+                    e.preventDefault();
+                    msg.textContent = "Password must be at least 8 characters long!";
+                    msg.style.color = "red";
+                }
+
+
+                if (password.value !== confirm.value) {
+                    e.preventDefault();
+                    msg.textContent = "Passwords do not match!";
+                    msg.style.color = "red";
+                }
+
+                
+            });
+        });
+
+    
+    function togglePassword(fieldId, icon) {
+    const input = document.getElementById(fieldId);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈";
+    } else {
+        input.type = "password";
+        icon.textContent = "👁";
+    }
+}
+
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <form class="signup-form" method="post">
+            {% csrf_token %}
+
+            <h2>Sign Up</h2>
+
+            {% if error %}
+                <p id="check" style="color: red;">{{ error }}</p>
+            {% endif %}
+
+            <div class="form-element">
+                <label for="username">Username</label>
+                <input type="text" id="username"  value="{{ username|default_if_none:'' }}"  name="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-element">
+                <label for="password">Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span onclick="togglePassword('password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁</span>
+                </div>
+                <p style="font-size: 0.9em; color: #666;">Password must be at least 8 characters.</p>
+            </div>
+            
+            <div class="form-element">
+                <label for="confirm_password">Confirm Password</label>
+                <div style="position: relative;">
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                    <span onclick="togglePassword('confirm_password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁</span>
+                </div>
+            </div>            
+
+
+            <br>
+
+            <button type="submit" class="btn">Sign Up</button>
+            
+            <p>Already have an account? <a href="{% url 'index' %}">Login</a></p>
+        </form>
+    </div>
+</body>
+</html>

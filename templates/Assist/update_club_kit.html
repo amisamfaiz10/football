@@ -1,0 +1,110 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Club details
+        {% endblock %}
+    </title>
+   
+  <link rel="stylesheet" href="{% static 'Assist/css/club_details.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+  <script src="{% static 'Goal/js/club_details.js' %}"></script>
+  </head>
+{% endblock %}
+
+{% block body %}
+    
+  <div class="form-container" style="margin-left: 300px; margin-top: 100px;">
+    <h1> Update Your Kit</h1>
+    <p style="color: red;">{{message}}</p>
+    <br>
+    <form action="{% url 'update_club_kit' %}" method="post" enctype="multipart/form-data" onsubmit="return checkform()">
+        {% csrf_token %}
+        <label>Upload kit:</label>
+      <input type="file" name="kit" id="kit" accept="image/*" required>
+      <p class="info-note">File type should only be PNG or JPG.</p>
+      <p class="info-note">File size should be less than 10MB.</p>
+
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+
+
+
+
+  <style>
+
+.info-note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 4px;
+    margin-bottom: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Style for the sidebar container */
+  .sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #4d79ff;
+    padding-top: 20px;
+    overflow-x: hidden;
+  }
+  
+  /* Style for the sidebar list */
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Style for each sidebar item */
+  .sidebar ul li {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  /* Style for the sidebar links */
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    display: block;
+    transition: background-color 0.3s;
+  }
+  
+  /* Change background color on hover */
+  .sidebar ul li a:hover {
+    background-color:  #002db3;
+  }
+  
+  /* Style for the rest of the page content */
+  body {
+    margin-left: 250px; /* Make space for the sidebar */
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .sidebar ul li a.active {
+    background-color: #001f80;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 5px;
+  }
+  
+    
+  </style>
+{% endblock %}

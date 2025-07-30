@@ -1,0 +1,179 @@
+{% extends 'Assist/layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Trophies
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+{% endblock %}
+
+{% block body %}
+<div class="trophy-container">
+    <h2 class="page-title">{{ club.name }}'s Trophies</h2>
+
+    <ul class="trophy-list">
+        {% for trophy in trophies %}
+        <li class="trophy-item">
+            <div class="trophy-content">
+                {% if trophy.picture %}
+                <div class="trophy-image-wrapper">
+                    <img src="{{ trophy.picture.url }}" alt="{{ trophy.name }}">
+                </div>
+                {% endif %}
+                <div class="trophy-details">
+                    <strong class="trophy-name">{{ trophy.name }}</strong>
+                    <span class="trophy-count"> — Won {{ trophy.times_won }} time{{ trophy.times_won|pluralize }}</span><br>
+                    <span class="trophy-years">
+                        {% if trophy.get_years_won %}
+                            <em>Years:</em> {{ trophy.get_years_won|join:", " }}
+                        {% else %}
+                            <em>No years recorded yet</em>
+                        {% endif %}
+                    </span>
+        
+                    <div class="upload-link">
+                        <a href="{% url 'update_trophy' trophy_id=trophy.id %}">Edit.</a>
+                    </div>
+        
+                    <form method="post" style="display:inline;" class="increment-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="trophy_id" value="{{ trophy.id }}">
+                        <button type="submit" name="increment_trophy" class="increment-button">+1</button>
+                    </form>
+                </div>
+            </div>
+        </li>
+        
+        {% empty %}
+            <li class="no-trophies">No trophies yet!</li>
+        {% endfor %}
+    </ul>
+
+    <div class="add-trophy-link">
+        <a href="{% url 'add_trophy' %}">Add new Trophy.</a>
+    </div>
+</div>
+
+<style>
+.trophy-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.page-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.trophy-list {
+    list-style: none;
+    padding: 0;
+}
+
+.trophy-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.trophy-image-wrapper img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trophy-image-wrapper img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.trophy-item {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.trophy-details {
+    flex: 1;
+    font-size: 1.05rem;
+    line-height: 1.5;
+}
+
+.upload-link a {
+    margin-top: 0.5rem;
+    display: inline-block;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.trophy-years {
+    color: #666;
+    font-size: 0.95rem;
+    display: block;
+    margin-top: 0.3rem;
+}
+
+.upload-link a:hover {
+    text-decoration: underline;
+}
+
+.increment-button {
+    margin-top: 0.7rem;
+    padding: 6px 12px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.increment-button:hover {
+    background-color: #0056b3;
+}
+
+
+.trophy-name {
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.increment-button:hover {
+    background-color: #0056b3;
+}
+
+.add-trophy-link {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.add-trophy-link a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.add-trophy-link a:hover {
+    text-decoration: underline;
+}
+
+.no-trophies {
+    color: #888;
+    font-style: italic;
+}
+</style>
+{% endblock %}

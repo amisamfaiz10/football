@@ -1,0 +1,79 @@
+{% extends "Assist/layout.html" %}
+
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Buy Players
+        {% endblock %}
+    </title>
+   
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    
+    <style>
+
+.h1-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Styling for the links to remove the default underline and add hover effects */
+.h1-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.h1-link:hover .h1-title {
+    color: #3498db; /* Blue color for hover effect */
+}
+
+/* Styling for the h1 element */
+.h1-title {
+    font-size: 28px; /* Larger text size */
+    font-weight: bold;
+    line-height: 1.4;
+    color: #333; /* Dark gray text color */
+    background: #f1f1f1; /* Light background to make text stand out */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    margin-top: 100px;
+
+}
+
+.h1-title:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+    </style>
+</head>
+{% endblock %}
+
+{% block body %}
+
+<div class="h1-container">
+    <a href="{% url 'buy_players_search' %}" class="h1-link">
+        <h1 class="h1-title">Click here to search for a player by name</h1>
+    </a>
+</div>
+
+<div class="h1-container">
+    <a href="{% url 'buy_players_filter' %}" class="h1-link">
+        <h1 class="h1-title">Click here to filter players by market value, age, position, country</h1>
+    </a>
+</div>
+
+
+<div class="h1-container">
+    <a href="{% url 'buy_player_club' %}" class="h1-link">
+        <h1 class="h1-title">Click here to browse players by club</h1>
+    </a>
+</div>
+
+
+{% endblock %}

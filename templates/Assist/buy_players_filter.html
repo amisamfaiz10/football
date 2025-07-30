@@ -1,0 +1,210 @@
+{% extends "Assist/layout.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}
+            Buy Players
+        {% endblock %}
+    </title>
+   
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+
+{% endblock %}
+
+{% block body %}
+
+<!-- Form Section -->
+<form method="POST" action="{% url 'buy_players_filter' %}" class="filter-form" id="filterForm">
+    {% csrf_token %}
+    <div class="filter-section">
+        <h3 class="filter-title">Country</h3>
+        <select name="country" multiple class="filter-select">
+            {% for country in form.country.field.choices %}
+                <option value="{{ country.0 }}" {% if country.0 in form.country.value %}selected{% endif %}>
+                    {{ country.1 }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-section">
+        <h3 class="filter-title">Age</h3>
+        <select name="age" multiple class="filter-select">
+            {% for age in form.age.field.choices %}
+                <option value="{{ age.0 }}" {% if age.0 in form.age.value %}selected{% endif %}>
+                    {{ age.1 }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="filter-section">
+        <h3 class="filter-title">Position</h3>
+        <select name="position" multiple class="filter-select">
+            {% for position in form.position.field.choices %}
+                <option value="{{ position.0 }}" {% if position.0 in form.position.value %}selected{% endif %}>
+                    {{ position.1 }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="filter-button">Apply Filters</button>
+    <br>
+    <br>
+    <button type="reset" class="reset-button">
+        <a href="{% url 'buy_players_filter' %}">Reset Filters</a> <!-- Reset button -->
+    </button>
+</form>
+
+<!-- Player List Section -->
+<h2 class="player-list-title">Filtered Players</h2>
+
+{% if request.method == "GET" %}
+    <h3 class="no-players" style="color: red;">Please select a filter</h3>
+
+    {% else %}
+    <ul class="player-list">
+    {% for player in players %}
+        <li class="player-item">
+            <strong class="player-name"><a href="{% url 'add_player' player_id=player.id %}">{{player.name}} </a></strong>
+            <span class="player-info">Position: {{ player.position }}</span>
+            <span class="player-info">Country: {{ player.country }}</span>
+            <span class="player-info">Age: {{ player.age }}</span>
+            <span class="player-info">Market Value: £{{ player.market_value| intcomma }}</span>
+        </li>
+    {% empty %}
+        <li class="no-players">No players found matching the selected filters.</li>
+    {% endfor %}
+    {% endif %}
+</ul>
+
+
+
+<style>
+ 
+   .filter-form {
+         max-width: 500px;
+         margin: 0 auto;
+         background-color: #ffffff;
+         padding: 20px;
+         border-radius: 8px;
+         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+     }
+ 
+     .filter-section {
+         margin-bottom: 20px;
+     }
+ 
+     .filter-title {
+         font-size: 18px;
+         color: #333;
+         margin-bottom: 8px;
+     }
+ 
+     .filter-select {
+         width: 100%;
+         padding: 10px;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+         font-size: 14px;
+         background-color: #f9f9f9;
+     }
+ 
+     .filter-button {
+         width: 100%;
+         padding: 12px;
+         background-color: #007BFF;
+         color: white;
+         border: none;
+         border-radius: 5px;
+         font-size: 16px;
+         cursor: pointer;
+     }
+ 
+     .filter-button:hover {
+         background-color: #0056b3;
+     }
+ 
+     /* Reset Filters Button Styling */
+     .reset-button {
+         width: 100%;
+         padding: 12px;
+         background-color: #dc3545;
+         color: white;
+         border: none;
+         border-radius: 5px;
+         font-size: 16px;
+         cursor: pointer;
+         transition: background-color 0.3s, transform 0.2s ease-in-out;
+         text-align: center;
+     }
+ 
+     .reset-button:hover {
+         background-color: #c82333;
+         transform: scale(1.05);
+     }
+ 
+     .reset-button a {
+         color: white;
+         text-decoration: none;
+         display: block;
+     }
+ 
+     .reset-button a:hover {
+         text-decoration: underline;
+     }
+ 
+     /* Player List Styles */
+     .player-list-title {
+         font-size: 22px;
+         margin: 30px 0 10px;
+         color: #333;
+     }
+ 
+     .player-list {
+         list-style-type: none;
+         padding-left: 0;
+     }
+ 
+     .player-item {
+         background-color: #fff;
+         padding: 15px;
+         margin-bottom: 10px;
+         border-radius: 5px;
+         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+     }
+ 
+     .player-name {
+         font-size: 18px;
+         font-weight: bold;
+     }
+ 
+     .player-info {
+         display: block;
+         color: #555;
+         font-size: 14px;
+         margin-top: 5px;
+     }
+ 
+     .no-players {
+         text-align: center;
+         color: #888;
+         font-size: 16px;
+     }
+ 
+     .filter-select option[selected] {
+     background-color: #ffeb3b; /* Yellow color to highlight selected */
+     color: black;
+ }
+ 
+ </style>
+ 
+{% endblock %}

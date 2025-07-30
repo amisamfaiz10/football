@@ -1,0 +1,99 @@
+{% extends 'Assist/layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>{% block title %}Add Coach {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    <style>
+      /* Optional: Quick styling boost if layout.css doesn't cover it */
+      .form-container {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: #f9f9f9;
+          padding: 2rem;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+
+      h2 {
+          text-align: center;
+          margin-bottom: 1.5rem;
+      }
+
+      label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      select {
+          width: 100%;
+          padding: 0.5rem;
+          margin-bottom: 1.2rem;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 1rem;
+      }
+
+      input[type="submit"] {
+          background-color: #007bff;
+          color: white;
+          padding: 0.7rem 1.5rem;
+          border: none;
+          border-radius: 4px;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+
+      input[type="submit"]:hover {
+          background-color: #0056b3;
+      }
+
+      .message {
+          margin-top: 1rem;
+          color: green;
+          text-align: center;
+      }
+    </style>
+</head>
+{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h2>Add  Info</h2>
+
+    <form action="{% url 'add_coach' %}" method="POST">
+        {% csrf_token %}
+        <p style="color: red;">{{message}}</p>
+        <br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" maxlength="50" 
+               value="{{ coach.name|default_if_none:'' }}" 
+               placeholder="Enter Name" readonly>
+
+
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" min="1" 
+               value="{{ coach.salary|default_if_none:'' }}" 
+               placeholder="Enter Salary" required>
+
+        <label for="type">Coach Type:</label>
+        <input type="text" id="type" name="type" maxlength="20" 
+        value="{{ coach.type|default_if_none:'' }}" placeholder="Enter Coach type" required>
+
+        <input type="submit" value="Submit">
+
+        {% if message %}
+            <div class="message">{{ message }}</div>
+        {% endif %}
+
+    </form>
+
+</div>
+{% endblock %}

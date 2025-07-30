@@ -1,0 +1,124 @@
+{% extends 'Assist/layout.html' %}
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>
+        {% block title %}Update Trophy{% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+    <script src="{% static 'Goal/js/club_details.js' %}"></script>
+
+    <style>
+        .trophy-form {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        .info-text {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .current-image {
+            max-height: 100px;
+            margin-top: 0.5rem;
+        }
+
+        .message {
+            color: red;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+
+{% endblock %}
+
+{% block body %}
+<form method="post" enctype="multipart/form-data" class="trophy-form">
+    {% csrf_token %}
+
+    {% if message %}
+        <div class="message">{{ message }}</div>
+    {% endif %}
+
+    <div class="form-group">
+        <label for="name" class="form-label">Trophy Name:</label>
+        <input type="text" id="name" name="name" class="form-input" value="{{ trophy.name }}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="picture" class="form-label">Trophy Picture:</label>
+
+        {% if trophy.picture %}
+            <p>Current Picture:</p>
+            <img src="{{ trophy.picture.url }}" alt="Current Trophy" name="picture" class="current-image"><br>
+            <a href="{% url 'trophy_picture' trophy_id=trophy.id %}"> Click here to update your trophy picture. </a>
+            {% else %}
+            <a href="{% url 'trophy_picture' trophy_id=trophy.id %}"> Click here to upload your trophy picture.</a>
+        {% endif %}
+
+    <div class="form-group">
+        <label for="years" class="form-label">Years Won:</label>
+        <input type="text" id="years" name="years" class="form-input" placeholder="e.g. 2015, 2016, 2019" value="{{ existing_years }}">
+        <p class="info-text">Separate years with a comma e.g. 2010, 2011.</p>
+        <p class="info-text">Leave empty to keep existing years.</p>
+    </div>
+
+    <button type="submit" class="submit-button">Update Trophy</button>
+</form>
+{% endblock %}

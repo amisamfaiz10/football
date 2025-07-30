@@ -1,0 +1,131 @@
+{% extends 'Assist/layout.html' %}
+
+{% load static %}
+
+{% block extra_head %}
+<head>
+    <title>{% block title %}
+        {{ player.name }}
+    {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'Assist/css/layout.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'Assist/images/fav.png' %}">
+</head>
+{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <div class="title-section">
+            <h2>Edit Player Details</h2>
+            <br>
+            <p>Modify the details of {{ player.name }}.</p>
+        </div>
+
+        <form action="{% url 'edit_player_details' player_id=player.id %}" method="POST">
+            {% csrf_token %}
+            <p style="color: red;">{{message}}</p>
+            <br>
+            <!-- Player name (read-only) -->
+            <div class="form-group">
+                <h3>Player:</h3>
+                <input type="text" value="{{ player.name }}" readonly>
+            </div>
+
+            <!-- Player position (read-only) -->
+            <div class="form-group">
+                <h3>Position:</h3>
+                <input type="text" value="{{ player.position }}" readonly>
+            </div>
+
+            <!-- Market value input -->
+            <div class="form-group">
+                <h3>Edit Market Value:</h3>
+                <input type="number" name="market_value" value="{{ player.market_value }}" placeholder="Enter market value" required>
+            </div>
+
+            <!-- Salary input -->
+            <div class="form-group">
+                <h3>Edit Salary:</h3>
+                <input type="number" name="salary" value="{{ player.salary }}" placeholder="Enter salary" required>
+            </div>
+
+            <div class="form-group">
+                <h3>Edit Jersey No:</h3>
+                <input type="number" name="jersey" value="{{ player.jersey_no }}" placeholder="Enter Jersey No." required>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit">Submit Changes</button>
+        </form>
+    </div>
+
+
+
+    <style>
+
+.form-container {
+               background-color: white;
+               padding: 30px;
+               border-radius: 8px;
+               box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+               max-width: 600px;
+               margin: 0 auto;
+               text-align: left;
+           }
+   
+           h3 {
+               color: #333;
+               margin-bottom: 10px;
+               font-size: 20px;
+               font-weight: 600;
+           }
+   
+           input[type="text"], input[type="number"] {
+               width: 100%;
+               padding: 12px;
+               margin: 8px 0;
+               border: 1px solid #ddd;
+               border-radius: 5px;
+               box-sizing: border-box;
+               font-size: 16px;
+           }
+   
+           input[type="text"]:read-only {
+               background-color: #f0f0f0;
+           }
+   
+           button {
+               padding: 12px 20px;
+               background-color: #007bff;
+               color: white;
+               font-size: 16px;
+               border: none;
+               border-radius: 5px;
+               cursor: pointer;
+               transition: background-color 0.3s;
+               width: 100%;
+           }
+   
+           button:hover {
+               background-color: #0056b3;
+           }
+   
+           .form-group {
+               margin-bottom: 20px;
+           }
+   
+           .form-group:last-child {
+               margin-bottom: 0;
+           }
+   
+           .form-group input {
+               font-size: 16px;
+           }
+   
+           .title-section {
+               text-align: center;
+               margin-bottom: 20px;
+           }
+       </style>
+    
+{% endblock %}
