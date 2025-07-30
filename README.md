@@ -26,7 +26,7 @@ A Django web application that allows football clubs to register, manage their te
 
 ## Screenshots
 
-Available in the UI folder. ()
+Available in the UI folder. (https://github.com/amisamfaiz10/football/tree/main/UI)
 
 ---
 
